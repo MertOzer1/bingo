@@ -1,0 +1,82 @@
+{% load static %}
+
+{% csrf_token %}
+<input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bingo Tracker</title>
+    <link rel="stylesheet" href="{% static 'bingo_tracker/style.css' %}">
+</head>
+<body>
+    <h1>Bingo Tracker</h1>
+
+    <!-- Add Sheet Form -->
+    <form method="post" action="{% url 'add_sheet' %}">
+        {% csrf_token %}
+        <!-- Input fields for 15 numbers -->
+        {% for i in number_range %}
+        <input type="number" name="number{{ i }}" required>
+        {% endfor %}
+        <input type="submit" value="Add Sheet">
+    </form>
+
+
+    <!-- Enter Number Form -->
+    <form method="post" action="{% url 'enter_number' %}">
+        {% csrf_token %}
+        <input type="number" name="called_number" required>
+        <input type="submit" value="Enter Number">
+    </form>
+
+    <!-- New Game Form -->
+    <form method="post" action="{% url 'new_game' %}" onsubmit="return confirmReset();">
+        {% csrf_token %}
+        <input type="submit" value="New Game">
+    </form>
+
+
+    <!-- Bingo Sheets Display -->
+    <div id="bingo-sheets">
+        {% for sheet in sheets %}
+        <div class="bingo-sheet">
+            <div class="row">
+                <div class="number" {% if sheet.number1 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number1 }}</div>
+                <div class="number" {% if sheet.number2 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number2 }}</div>
+                <div class="number" {% if sheet.number3 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number3 }}</div>
+                <div class="number" {% if sheet.number4 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number4 }}</div>
+                <div class="number" {% if sheet.number5 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number5 }}</div>
+            </div>
+            <div class="row">
+                <div class="number" {% if sheet.number6 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number6 }}</div>
+                <div class="number" {% if sheet.number7 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number7 }}</div>
+                <div class="number" {% if sheet.number8 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number8 }}</div>
+                <div class="number" {% if sheet.number9 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number9 }}</div>
+                <div class="number" {% if sheet.number10 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number10 }}</div>
+
+            </div>
+            <div class="row">
+                <div class="number" {% if sheet.number11 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number11 }}</div>
+                <div class="number" {% if sheet.number12 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number12 }}</div>
+                <div class="number" {% if sheet.number13 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number13 }}</div>
+                <div class="number" {% if sheet.number14 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number14 }}</div>
+                <div class="number" {% if sheet.number15 in called_numbers %}style="background-color: yellow;"{% endif %}>{{ sheet.number15 }}</div>
+
+            </div>
+            <!-- Erase button for each sheet -->
+            <button type="button" onclick="confirmErase({{ sheet.id }})">Erase</button>
+        </div>
+
+
+
+        {% empty %}
+        <p>No bingo sheets added yet.</p>
+        {% endfor %}
+    </div>
+
+
+    <script src="{% static 'bingo_tracker/script.js' %}"></script>
+</body>
+</html>

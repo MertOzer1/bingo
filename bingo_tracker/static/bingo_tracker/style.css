@@ -1,0 +1,12 @@
+.bingo-sheet {
+    border: 1px solid #000;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+.row {
+    display: flex;
+}
+.number {
+    width: 20px;
+    margin-right: 5px;
+}
